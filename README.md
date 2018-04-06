@@ -32,7 +32,7 @@ The amount you would like a person scanning the QR code to send.
 ##### Logo (*optional* default is NEO green logo)
 `data-logo="https://o3.network/img/logo-color.png"`
 
-#### Example
+#### Example native asset transfer
 
 10 NEO to AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb
 ```html
@@ -48,4 +48,17 @@ The amount you would like a person scanning the QR code to send.
 Unspecified amount of GAS to AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb (let sender decides)
 ```html
 <div class="neo-nep9-qr" data-asset="gas" data-address="AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb"></div>
+```
+
+
+#### Example NEP5 transfer
+
+unspecific amount of ONT to AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb with ONT logo
+```html
+<div class="neo-nep9-qr" data-nep5="ceab719b8baa2310f232ee0d277c061704541cfb" data-address="AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb" data-logo="https://avatars3.githubusercontent.com/u/36180490?s=200&v=4"></div>
+```
+
+10 ONT to AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb
+```html
+<div class="neo-nep9-qr" data-nep5="ceab719b8baa2310f232ee0d277c061704541cfb" data-address="AeNkbJdiMx49kBStQdDih7BzfDwyTNVRfb" data-amount="10" ></div>
 ```
