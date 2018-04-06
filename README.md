@@ -24,11 +24,13 @@ The amount you would like a person scanning the QR code to send.
 `data-amount="10"`  
 
 ##### QR Code width (*optional* default is 200px)
-`data-width=200`
+`data-width="200"`
 
 ##### QR Code height (*optional* default is 200px)
-`data-height=200`
+`data-height="200"`
 
+##### Logo (*optional* default is NEO green logo)
+`data-logo="https://o3.network/img/logo-color.png"`
 
 #### Example
 

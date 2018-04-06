@@ -21,7 +21,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 			"gas":"602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7"
 		}
 
-		function drawQRCanvas(container, width, height){
+		function drawQRCanvas(container, width, height, logo){
 			var cWidth = width;
 			var cHeight = height;
 			var margin = 0;
@@ -35,10 +35,22 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 			var qrImage = container.querySelector("img");
 			var qrWidth = cWidth;
 			var qrHeight = cHeight;
-			var neoLogo = new Image();
-			neoLogo.onload = function() {
-				var logoWidth = cWidth * 0.2;
-            	var logoHeight = logoWidth * 1.17; //maintain ratio
+
+			
+			var centerLogo = new Image();
+			centerLogo.onload = function() {
+				var originalWidth = centerLogo.width;
+				var originalHeight = centerLogo.width;
+
+				var targetLogoWidth = cWidth * 0.2;
+				var targetLogoHeight = cHeight * 0.2;
+
+            	var aspectRatio = (originalWidth / originalHeight);
+
+            	var logoWidth = targetLogoWidth / aspectRatio;
+            	var logoHeight = targetLogoWidth / aspectRatio;
+
+
             	var boxWidth = cWidth * 0.3;
             	var boxHeight = cHeight * 0.3;
                 //draw qr image on white canvase
@@ -48,13 +60,18 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
                 context.fillStyle = 'white';
                 context.fill();
                 //draw NEO logo
-                context.drawImage(neoLogo,
+                context.drawImage(centerLogo,
                 	((qrWidth - logoWidth)/2) + margin,
                 	((qrHeight - logoHeight)/2) + margin,
                 	logoWidth,
                 	logoHeight);
             }
-            neoLogo.src = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI4NXB4IiBoZWlnaHQ9IjEwMHB4IiB2aWV3Qm94PSIwIDAgODUgMTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICA8ZGVmcz4gICAgICAgIDxsaW5lYXJHcmFkaWVudCB4MT0iMi4yMzAxMDEwNSUiIHkxPSI4NS42MDIlIiB4Mj0iNzQuNzc5Mjk0NSUiIHkyPSIzMy4xMTMlIiBpZD0ibGluZWFyR3JhZGllbnQtMSI+ICAgICAgICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iI0JFRUEyRSIgb2Zmc2V0PSIwJSI+PC9zdG9wPiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiM1MkJBMDAiIG9mZnNldD0iMTAwJSI+PC9zdG9wPiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4gICAgPC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTU3Mi4wMDAwMDAsIC00MjEuMDAwMDAwKSIgZmlsbD0idXJsKCNsaW5lYXJHcmFkaWVudC0xKSIgZmlsbC1ydWxlPSJub256ZXJvIj4gICAgICAgICAgICA8ZyBpZD0ibmVvIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzIuMDAwMDAwLCA0MjEuMDAwMDAwKSI+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLDE5LjAwNDUgTDMzLjQ3MDM0NzEsMzQuODQxNSBMMzMuNDcwMzQ3MSwxMDAgTDEuNDIwNTA2MDNlLTE1LDg0LjE2MyBMMCwxOS4wMDQ1IFogTTUwLjY1NzgzNjIsMCBMMS42MDY4NDQ1NSwxNy40NDcgTDM0Ljc3NzMxNCwzMy4zODQgTDgzLjY3NjM2NzcsMTUuODM3IEw1MC42NTc4MzYyLDAgWiBNNDkuNzUzMjA1MiwyOS44MTQ1IEw0OS43NTMyMDUyLDY5LjY4MzUgTDg0LjU4MDQ5ODksODMuMjU4IEw4NC41ODA0OTg5LDE3LjI5NDUgTDQ5Ljc1MzIwNTIsMjkuODE0NSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=';
+            if (logo !== undefined) {
+				centerLogo.src = logo;
+			} else {
+				 centerLogo.src = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI4NXB4IiBoZWlnaHQ9IjEwMHB4IiB2aWV3Qm94PSIwIDAgODUgMTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICA8ZGVmcz4gICAgICAgIDxsaW5lYXJHcmFkaWVudCB4MT0iMi4yMzAxMDEwNSUiIHkxPSI4NS42MDIlIiB4Mj0iNzQuNzc5Mjk0NSUiIHkyPSIzMy4xMTMlIiBpZD0ibGluZWFyR3JhZGllbnQtMSI+ICAgICAgICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iI0JFRUEyRSIgb2Zmc2V0PSIwJSI+PC9zdG9wPiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiM1MkJBMDAiIG9mZnNldD0iMTAwJSI+PC9zdG9wPiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4gICAgPC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTU3Mi4wMDAwMDAsIC00MjEuMDAwMDAwKSIgZmlsbD0idXJsKCNsaW5lYXJHcmFkaWVudC0xKSIgZmlsbC1ydWxlPSJub256ZXJvIj4gICAgICAgICAgICA8ZyBpZD0ibmVvIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzIuMDAwMDAwLCA0MjEuMDAwMDAwKSI+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLDE5LjAwNDUgTDMzLjQ3MDM0NzEsMzQuODQxNSBMMzMuNDcwMzQ3MSwxMDAgTDEuNDIwNTA2MDNlLTE1LDg0LjE2MyBMMCwxOS4wMDQ1IFogTTUwLjY1NzgzNjIsMCBMMS42MDY4NDQ1NSwxNy40NDcgTDM0Ljc3NzMxNCwzMy4zODQgTDgzLjY3NjM2NzcsMTUuODM3IEw1MC42NTc4MzYyLDAgWiBNNDkuNzUzMjA1MiwyOS44MTQ1IEw0OS43NTMyMDUyLDY5LjY4MzUgTDg0LjU4MDQ5ODksODMuMjU4IEw4NC41ODA0OTg5LDE3LjI5NDUgTDQ5Ljc1MzIwNTIsMjkuODE0NSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=';
+			}
+           
             container.innerHTML = "";
             container.appendChild(canvas);
         }
@@ -73,6 +90,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         		} 
         	})
         	.join('&');
+        	if (query.endsWith("&") == true) {
+        		query = query.slice(0, -1);
+        	}
         	var fullURI = url.toString() + "?" + query;
         	console.log(fullURI);
         	return fullURI;
@@ -99,9 +119,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         	console.log(fullURI);
         	return fullURI;
         }
-        function drawNEP5TransferQRCode(container, address, amount, nep5ScriptHash,width,height) {
-			
 
+        function drawNEP5TransferQRCode(container, address, amount, nep5ScriptHash, width, height, logo) {
+		
 			var targetWidth = 200;
 			var targetHeight = 200;
 
@@ -129,10 +149,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 				correctLevel : QRCode.CorrectLevel.H
 			}); 
 
-			drawQRCanvas(container, targetWidth, targetHeight);
+			drawQRCanvas(container, targetWidth, targetHeight, logo);
 
         }
-        function drawNativeAssetTransferQRCode(container, address, amount, assetName,width,height) {
+        function drawNativeAssetTransferQRCode(container, address, amount, assetName, width, height, logo) {
 			//check valid asset first
 			var assetID = assets[assetName];
 			if (assetID === undefined) {
@@ -166,7 +186,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 				correctLevel : QRCode.CorrectLevel.H
 			}); 
 
-			drawQRCanvas(container, targetWidth, targetHeight);
+			drawQRCanvas(container, targetWidth, targetHeight,logo);
 		}
 
 		var nep9qrContainers = document.getElementsByClassName("neo-nep9-qr");
@@ -179,6 +199,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 			var asset = container.dataset.asset;
 			var width = container.dataset.width;
 			var height = container.dataset.height;
+			var logo = container.dataset.logo;
+
 			//nep-5 asset
 			var nep5ScriptHash = container.dataset.nep5;
 			var nep5ToAddress = container.dataset.address;
@@ -196,7 +218,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 			if (isNEP5 == true){
 				container.id = "neo-nep9-qr-container-nep5" + i;
 				console.log(nep5ScriptHash,nep5ToAddress,nep5Amount);
-				drawNEP5TransferQRCode(container, nep5ToAddress, nep5Amount, nep5ScriptHash,width,height);
+				drawNEP5TransferQRCode(container, nep5ToAddress, nep5Amount, nep5ScriptHash,width,height,logo);
 				continue;	
 			} 
 		
@@ -206,7 +228,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 			}
 			
 			container.id = "neo-nep9-qr-container" + i;
-			drawNativeAssetTransferQRCode(container, address, amount, asset,width,height);
+			drawNativeAssetTransferQRCode(container, address, amount, asset, width, height, logo);
 		}
 	};
 })();
