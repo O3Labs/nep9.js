@@ -7,6 +7,11 @@
 ```html
 <script type="text/javascript" src="js/nep9.js"></script>
 ```
+#### CDN
+```html
+<script type="text/javascript" src="https://cdn.o3.network/js/nep9/0.1/nep9.js"></script>
+```
+
 
 define `div` element with `class=neo-nep9-qr`
 
