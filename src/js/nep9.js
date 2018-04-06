@@ -77,7 +77,61 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         	console.log(fullURI);
         	return fullURI;
         }
+        function generateNEP5TransferURI(nep5) {
+        	var url = new URL("neo:" + nep5.scripthash);
+        	var params = {
+        		operation:"transfer",
+        		to:nep5.to,
+        		amount:nep5.amount
+        	}
+        	var esc = encodeURIComponent;
+        	var query = Object.keys(params)
+        	.map(k => { 
+        		if (params[k] != undefined){
+        			return esc(k) + '=' + esc(params[k])
+        		} 
+        	})
+        	.join('&');
+        	if (query.endsWith("&") == true) {
+        		query = query.slice(0, -1);
+        	}
+        	var fullURI = url.toString() + "?" + query;
+        	console.log(fullURI);
+        	return fullURI;
+        }
+        function drawNEP5TransferQRCode(container, address, amount, nep5ScriptHash,width,height) {
+			
 
+			var targetWidth = 200;
+			var targetHeight = 200;
+
+			if (width !== undefined) {
+				targetWidth = width;
+			}
+			if (height !== undefined) {
+				targetHeight = height;
+			}
+
+			var qrSpan = document.createElement("div");
+			container.appendChild(qrSpan)
+			var qrSpanID = container.id + "span"
+			qrSpan.id = qrSpanID;
+			qrSpan.innerHTML ="";
+
+			var uri = {scripthash:nep5ScriptHash, amount: amount, to:address};
+			var fullURI = generateNEP5TransferURI(uri);
+			var qrcode = new QRCode(qrSpanID, {
+				text: fullURI,
+				width: targetWidth,
+				height: targetHeight,
+				colorDark : "#000000",
+				colorLight : "#ffffff",
+				correctLevel : QRCode.CorrectLevel.H
+			}); 
+
+			drawQRCanvas(container, targetWidth, targetHeight);
+
+        }
         function drawNativeAssetTransferQRCode(container, address, amount, assetName,width,height) {
 			//check valid asset first
 			var assetID = assets[assetName];
@@ -118,16 +172,39 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 		var nep9qrContainers = document.getElementsByClassName("neo-nep9-qr");
 		var containers = new Array();
 		for (var i = 0; i < nep9qrContainers.length;i++) {
+			var isNEP5 = false;
 			var container =  nep9qrContainers[i];
 			var address = container.dataset.address;
 			var amount = container.dataset.amount;
 			var asset = container.dataset.asset;
 			var width = container.dataset.width;
 			var height = container.dataset.height;
+			//nep-5 asset
+			var nep5ScriptHash = container.dataset.nep5;
+			var nep5ToAddress = container.dataset.address;
+			var nep5Amount = container.dataset.amount;
 
-			if (address === undefined || address === "") {
+			if (nep5ScriptHash != undefined) {
+				isNEP5 = true
+			}
+
+			if (isNEP5 == true && nep5ScriptHash !== undefined && nep5ScriptHash.length != 40 ) {
+				console.log("Invalid NEP5 script hash:", nep5ScriptHash);
+				continue;
+			}
+
+			if (isNEP5 == true){
+				container.id = "neo-nep9-qr-container-nep5" + i;
+				console.log(nep5ScriptHash,nep5ToAddress,nep5Amount);
+				drawNEP5TransferQRCode(container, nep5ToAddress, nep5Amount, nep5ScriptHash,width,height);
+				continue;	
+			} 
+		
+			if (isNEP5 == false && address === undefined || address === "") {
+				console.log("Address cannot be null for native asset transfer.")
 				continue
 			}
+			
 			container.id = "neo-nep9-qr-container" + i;
 			drawNativeAssetTransferQRCode(container, address, amount, asset,width,height);
 		}
