@@ -11,9 +11,13 @@
 define `div` element with `class=neo-nep9-qr`
 
 
-##### Asset (*required*)
+##### Asset (*required* for native asset transfer)
 The asset you would like a person scanning the QR code to send.  
 `data-asset="neo"`  or `data-asset="gas"`  
+
+#### NEP5 script hash (*required* for nep5 token transfer)
+The nep5 token you would like a person scanning the QR code to send.  
+`data-nep5="ceab719b8baa2310f232ee0d277c061704541cfb"`
 
 ##### Address (*required*)
 Your valid NEO address.  
