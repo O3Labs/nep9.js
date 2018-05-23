@@ -79,7 +79,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         function generateURI(nep9) {
         	var url = new URL("neo:" + nep9.address);
         	var params = {
-        		assetID:nep9.assetID,
+        		asset:nep9.asset,
         		amount:nep9.amount
         	}
         	var esc = encodeURIComponent;
@@ -98,10 +98,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         	return fullURI;
         }
         function generateNEP5TransferURI(nep5) {
-        	var url = new URL("neo:" + nep5.scripthash);
+        	var url = new URL("neo:" + nep5.to);
+
         	var params = {
-        		operation:"transfer",
-        		to:nep5.to,
+        		asset:nep5.scripthash,
         		amount:nep5.amount
         	}
         	var esc = encodeURIComponent;
@@ -175,7 +175,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 			qrSpan.id = qrSpanID;
 			qrSpan.innerHTML ="";
 
-			var uri = {address:address, amount: amount, assetID:assetID};
+			var uri = {address:address, amount: amount, asset:assetName};
 			var fullURI = generateURI(uri);
 			var qrcode = new QRCode(qrSpanID, {
 				text: fullURI,
@@ -217,7 +217,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
 			if (isNEP5 == true){
 				container.id = "neo-nep9-qr-container-nep5" + i;
-				console.log(nep5ScriptHash,nep5ToAddress,nep5Amount);
 				drawNEP5TransferQRCode(container, nep5ToAddress, nep5Amount, nep5ScriptHash,width,height,logo);
 				continue;	
 			} 
